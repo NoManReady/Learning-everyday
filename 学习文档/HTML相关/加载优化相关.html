@@ -1,0 +1,11 @@
+<!-- 是一种告诉浏览器获取一项可能被下一页访问所需要的资源方式 ;prefetch的主要用途是加速下一页访问速度，而不是当前页面的速度-->
+<link rel="prefetch">
+
+<!-- preload最基本的使用方式是提前加载较晚发现的资源;使用onload处理函数来创建一些基于标签的异步加载器 -->
+<link rel="preload" as="style" href="async_style.css" onload="this.rel='stylesheet'">
+<link rel="preload" as="script" href="async_script.js" onload="var script = document.createElement('script');
+        script.src = this.href;
+        document.body.appendChild(script);">
+<!-- 响应式加载 -->
+<link rel="preload" as="image" href="map.png" media="(max-width: 600px)">
+<link rel="preload" as="script" href="map.js" media="(min-width: 601px)">

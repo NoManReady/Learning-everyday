@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    window.onload = function () {
+      var a = document.createElement("a")
+      a.download = '文件自下载.html'
+      a.href = './文件自下载.html'
+
+      var clickEvent = new MouseEvent("click", {
+        "view": window,
+        "bubbles": true,
+        "cancelable": false
+      })
+
+      a.dispatchEvent(clickEvent)
+    }
+  </script>
+</body>
+
+</html>
