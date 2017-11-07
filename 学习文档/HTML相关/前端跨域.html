@@ -44,3 +44,13 @@ postMessage 是 HTML5 新增加的一项功能，跨文档消息传输(Cross Doc
 对于主域相同而子域不同的情况下，可以通过设置 document.domain 的办法来解决
 在 http://www.example.com/index.html 和 http://sub.example.com/data.html 两个文件分别加上 document.domain = "example.com" 然后通过 index.html
 文件创建一个 iframe，去控制 iframe 的 window，从而进行交互
+
+
+
+
+
+http://www.cnblogs.com/skylar/p/ajaxCORS.html
+
+
+CORS中的Cookie： CORS机制默认是不会发送cookie信息和HTTP的认证信息的，除非我们改变设置。可以这样： xhr.withCredentials = true; 同时服务器响应： Access-Control-Allow-Credentials:true
+//这里值不能为*必须明确指定域名 这时，我们在发送请求的时候才会捎带上cookie的信息，而且这里的cookie也遵循同源策略，只有服务器域名下的cookie信息才会被捎带
