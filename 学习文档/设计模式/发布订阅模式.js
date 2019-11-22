@@ -11,7 +11,7 @@ const pubsub = (function () {
     del
   sub = (key, fn) => {
     if (!pools[key]) {
-      pools[key] = {}
+      pools[key] = []
     }
     pools[key].push(fn)
   }
