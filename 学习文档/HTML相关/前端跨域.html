@@ -1,32 +1,47 @@
-CORS 是一个 W3C 标准，全称是"跨域资源共享"（Cross-origin resource sharing） 浏览器一旦发现 ajax 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求(options预检) 服务器需要支持CORS请求
+CORS 是一个 W3C 标准，全称是"跨域资源共享"（Cross-origin resource sharing） 浏览器一旦发现 ajax 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求(options预检)
+服务器需要支持CORS请求
 返回头设置Access-Control-Allow-Origin为请求源（origin） // cors/server.js
 <script>
   require('http').createServer((req, res) => {
-    res.writeHead(200,
-      { 'Access-Control-Allow-Origin': 'http://localhost:8080', 'Content-Type': 'text/html;charset=utf-8', }); res.end('这是你要的数据：1111');
-  }).listen(3000, '127.0.0.1'); console.log('启动服务，监听 127.0.0.1:3000'); 
-</script> 
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Content-Type': 'text/html;charset=utf-8',
+    });
+    res.end('这是你要的数据：1111');
+  }).listen(3000, '127.0.0.1');
+  console.log('启动服务，监听 127.0.0.1:3000');
+</script>
 
-JSONP 全称为：JSON with padding，可用于解决老版本浏览器的跨域数据访问问题 jsonp 之所以能够跨域的关键在于页面调用 JS 脚本是不受同源策略的影响，相当于向后端发起一条 http 请求，跟后端约定好函数名，后端拿到函数名，动态计算出返回结果并返回给前端执行
+JSONP 全称为：JSON with padding，可用于解决老版本浏览器的跨域数据访问问题 jsonp 之所以能够跨域的关键在于页面调用 JS 脚本是不受同源策略的影响，相当于向后端发起一条 http
+请求，跟后端约定好函数名，后端拿到函数名，动态计算出返回结果并返回给前端执行
 JS 脚本，相当于是一种 "动态 JS 脚本" 服务端代理：当你需要有跨域的请求操作时发送请求给后端，让后端帮你代为请求，然后最后将获取的结果发送给你
-<script> 
-  const url = require('url'); const http = require('http'); const https = require('https'); const server = http.createServer((req,
-    res) => {
-    const path = url.parse(req.url).path.slice(1); if (path === 'topics') {
+<script>
+  const url = require('url');
+  const http = require('http');
+  const https = require('https');
+  const server = http.createServer((req, res) => {
+    const path = url.parse(req.url).path.slice(1);
+    if (path === 'topics') {
       https.get('https://cnodejs.org/api/v1/topics',
         (resp) => {
-          let data = ""; resp.on('data', chunk => { data += chunk; }); resp.on('end', () => {
+          let data = "";
+          resp.on('data', chunk => {
+            data += chunk;
+          });
+          resp.on('end', () => {
             res.writeHead(200, {
-              'Content-Type':
-              'application/json; charset=utf-8'
-            }); res.end(data);
+              'Content-Type': 'application/json; charset=utf-8'
+            });
+            res.end(data);
           });
         })
     }
-  }).listen(3000, '127.0.0.1'); console.log('启动服务，监听 127.0.0.1:3000');
-</script> 
+  }).listen(3000, '127.0.0.1');
+  console.log('启动服务，监听 127.0.0.1:3000');
+</script>
 
-postMessage 是 HTML5 新增加的一项功能，跨文档消息传输(Cross Document Messaging) // postMessage/client/index.html 对应 localhost:8080/index.html
+postMessage 是 HTML5 新增加的一项功能，跨文档消息传输(Cross Document Messaging) // postMessage/client/index.html 对应
+localhost:8080/index.html
 <iframe src="http://localhost:8081/data.html" style='display: none;'></iframe>
 <script>
   window.onload = function () {
@@ -42,7 +57,8 @@ postMessage 是 HTML5 新增加的一项功能，跨文档消息传输(Cross Doc
 
 
 对于主域相同而子域不同的情况下，可以通过设置 document.domain 的办法来解决
-在 http://www.example.com/index.html 和 http://sub.example.com/data.html 两个文件分别加上 document.domain = "example.com" 然后通过 index.html
+在 http://www.example.com/index.html 和 http://sub.example.com/data.html 两个文件分别加上 document.domain = "example.com" 然后通过
+index.html
 文件创建一个 iframe，去控制 iframe 的 window，从而进行交互
 
 
@@ -52,5 +68,6 @@ postMessage 是 HTML5 新增加的一项功能，跨文档消息传输(Cross Doc
 http://www.cnblogs.com/skylar/p/ajaxCORS.html
 
 
-CORS中的Cookie： CORS机制默认是不会发送cookie信息和HTTP的认证信息的，除非我们改变设置。可以这样： xhr.withCredentials = true; 同时服务器响应： Access-Control-Allow-Credentials:true
+CORS中的Cookie： CORS机制默认是不会发送cookie信息和HTTP的认证信息的，除非我们改变设置。可以这样： xhr.withCredentials = true; 同时服务器响应：
+Access-Control-Allow-Credentials:true
 //这里值不能为*必须明确指定域名 这时，我们在发送请求的时候才会捎带上cookie的信息，而且这里的cookie也遵循同源策略，只有服务器域名下的cookie信息才会被捎带

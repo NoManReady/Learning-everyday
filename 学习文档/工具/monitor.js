@@ -1,8 +1,6 @@
 /**
  * 前端监控
  */
-
-
 const performanceUtils = {
   // 获取性能信息
   getPerformance: () => {
