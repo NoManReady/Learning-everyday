@@ -5,7 +5,7 @@
  * 耦
  */
 const pubsub = (function () {
-  const pools = [],
+  const pools = {},
     pub,
     sub,
     del
